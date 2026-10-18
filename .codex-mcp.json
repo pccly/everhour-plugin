@@ -5,7 +5,10 @@
       "args": [
         "./server.mjs"
       ],
-      "cwd": "."
+      "cwd": ".",
+      "env_vars": [
+        "EVERHOUR_API_KEY"
+      ]
     }
   }
 }

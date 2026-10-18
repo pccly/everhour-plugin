@@ -2,11 +2,12 @@
 // Minimal stdio MCP server (newline-delimited JSON-RPC 2.0) exposing Everhour time logging.
 
 import { createInterface } from "node:readline";
-import { EverhourError, logTime, searchTasks } from "./lib/everhour.mjs";
+import { logTime, searchTasks } from "./lib/everhour.mjs";
 
 const TOOLS = [
   {
     name: "find_task",
+    annotations: { title: "Find Everhour task", readOnlyHint: true, openWorldHint: true },
     description:
       "Search Everhour tasks by tracker key (e.g. QA-1049) or name words. Returns id, key, status, and name for each match.",
     inputSchema: {
@@ -25,6 +26,13 @@ const TOOLS = [
   },
   {
     name: "log_time",
+    annotations: {
+      title: "Log Everhour time",
+      readOnlyHint: false,
+      destructiveHint: false,
+      idempotentHint: false,
+      openWorldHint: true,
+    },
     description:
       "Log time on one Everhour task for the current user. `task` is a tracker key that exactly equals the task's key " +
       "(e.g. QA-1049), an exact task name, or an Everhour task id (li:..., ev:...). Refuses to add a second entry " +
@@ -61,7 +69,7 @@ async function handle({ id, method, params }) {
       return {
         protocolVersion: params?.protocolVersion ?? "2025-06-18",
         capabilities: { tools: {} },
-        serverInfo: { name: "everhour", version: "0.2.1" },
+        serverInfo: { name: "everhour", version: "0.2.2" },
       };
     case "ping":
       return {};
@@ -73,7 +81,6 @@ async function handle({ id, method, params }) {
       try {
         return { content: [{ type: "text", text: await tool.run(params.arguments ?? {}) }] };
       } catch (error) {
-        if (!(error instanceof EverhourError)) throw error;
         return { content: [{ type: "text", text: error.message }], isError: true };
       }
     }
@@ -91,6 +98,8 @@ createInterface({ input: process.stdin }).on("line", async (line) => {
   } catch {
     return send({ id: null, error: { code: -32700, message: "Parse error" } });
   }
+  if (typeof message !== "object" || message === null || Array.isArray(message))
+    return send({ id: null, error: { code: -32600, message: "Invalid Request" } });
   try {
     const result = await handle(message);
     if (message.id !== undefined) send({ id: message.id, result });

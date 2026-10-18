@@ -1,6 +1,6 @@
 {
   "name": "everhour",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Log Everhour time against tracker tasks (Linear keys or Everhour ids) through MCP tools, a skill, and a CLI",
   "author": {
     "name": "Pho Huynh"

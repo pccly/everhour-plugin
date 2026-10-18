@@ -1,7 +1,7 @@
 {
   "name": "everhour",
   "displayName": "Everhour",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Log Everhour time against tracker tasks (Linear keys or Everhour ids) through MCP tools, a skill, and a CLI",
   "author": {
     "name": "Pho Huynh"
@@ -33,5 +33,8 @@
       }
     }
   },
-  "homepage": "https://github.com/pccly/everhour-plugin"
+  "homepage": "https://github.com/pccly/everhour-plugin",
+  "documentationUrl": "https://github.com/pccly/everhour-plugin#readme",
+  "supportUrl": "https://github.com/pccly/everhour-plugin/issues",
+  "privacyPolicyUrl": "https://github.com/pccly/everhour-plugin#privacy"
 }
