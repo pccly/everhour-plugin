@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" role="img" aria-labelledby="t">
+  <title id="t">Everhour plugin logo</title>
+  <g id="tile"><rect width="64" height="64" rx="14" fill="#3B3FD8"/></g>
+  <g id="stopwatch" fill="none" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M27 12h10M32 12v5" stroke-width="4"/>
+    <path d="M45 19l3-3" stroke-width="4"/>
+    <circle cx="32" cy="36" r="16" stroke-width="4"/>
+    <path d="M25 36.5l5 5 9-10" stroke-width="4.5"/>
+  </g>
+</svg>

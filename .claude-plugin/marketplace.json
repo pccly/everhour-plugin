@@ -1,0 +1,15 @@
+{
+  "name": "everhour-plugin",
+  "owner": {
+    "name": "Pho Huynh"
+  },
+  "description": "Everhour time logging for Claude Code",
+  "plugins": [
+    {
+      "name": "everhour",
+      "source": "./",
+      "description": "Log Everhour time against tracker tasks through MCP tools, a skill, and a CLI",
+      "displayName": "Everhour"
+    }
+  ]
+}

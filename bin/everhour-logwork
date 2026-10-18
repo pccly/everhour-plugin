@@ -1,0 +1,48 @@
+#!/usr/bin/env node
+// Log time to one Everhour task from the shell.
+//
+//   everhour-logwork QA-1049 30m
+//   everhour-logwork FRO-12121 1h30m --date 2026-10-16 --comment "review"
+//   everhour-logwork QA-1049 0:45 --dry-run
+//   everhour-logwork --find "agenda header"
+//
+// The API key comes from EVERHOUR_API_KEY or the macOS Keychain item "everhour-api-key".
+
+import { parseArgs } from "node:util";
+import { EverhourError, logTime, searchTasks } from "../lib/everhour.mjs";
+
+const { values: opts, positionals } = parseArgs({
+  allowPositionals: true,
+  options: {
+    date: { type: "string", default: "today" },
+    comment: { type: "string" },
+    find: { type: "string" },
+    "dry-run": { type: "boolean", default: false },
+    force: { type: "boolean", default: false },
+    help: { type: "boolean", short: "h", default: false },
+  },
+});
+
+const usage =
+  "usage: everhour-logwork <TASK-KEY|everhour-task-id> <duration> [--date YYYY-MM-DD|today|yesterday] [--comment text] [--dry-run] [--force]\n" +
+  "       everhour-logwork --find <query>";
+
+try {
+  if (opts.help) {
+    console.log(usage);
+  } else if (opts.find) {
+    for (const t of await searchTasks(opts.find)) console.log(`${t.id}\t${t.number ?? "-"}\t${t.status ?? "-"}\t${t.name}`);
+  } else if (positionals.length !== 2) {
+    console.error(usage);
+    process.exitCode = 1;
+  } else {
+    const [task, duration] = positionals;
+    console.log(
+      await logTime({ task, duration, date: opts.date, comment: opts.comment, dryRun: opts["dry-run"], force: opts.force }),
+    );
+  }
+} catch (error) {
+  if (!(error instanceof EverhourError)) throw error;
+  console.error(`error: ${error.message}`);
+  process.exitCode = 1;
+}

@@ -1,0 +1,37 @@
+{
+  "name": "everhour",
+  "displayName": "Everhour",
+  "version": "0.2.1",
+  "description": "Log Everhour time against tracker tasks (Linear keys or Everhour ids) through MCP tools, a skill, and a CLI",
+  "author": {
+    "name": "Pho Huynh"
+  },
+  "repository": "https://github.com/pccly/everhour-plugin",
+  "license": "MIT",
+  "keywords": [
+    "everhour",
+    "time-tracking",
+    "linear"
+  ],
+  "icon": "./assets/logo.svg",
+  "userConfig": {
+    "api_key": {
+      "type": "string",
+      "title": "Everhour API token",
+      "description": "Everhour > Settings > My Profile > Application Access. Leave empty to use the macOS Keychain item everhour-api-key.",
+      "sensitive": true
+    }
+  },
+  "mcpServers": {
+    "everhour": {
+      "command": "node",
+      "args": [
+        "${CLAUDE_PLUGIN_ROOT}/server.mjs"
+      ],
+      "env": {
+        "EVERHOUR_API_KEY": "${user_config.api_key}"
+      }
+    }
+  },
+  "homepage": "https://github.com/pccly/everhour-plugin"
+}
